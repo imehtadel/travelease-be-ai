@@ -34,7 +34,7 @@ public class RoomService {
 	
 	public List<AvailableRoom> getAvailableRooms(Long hotelId, String checkInDate, String checkOutDate) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		List<Room> rooms = roomRepository.findAll();
+		List<Room> rooms = roomRepository.findByHotelId(hotelId);
 		List<Long> unAvailableRoomIds = new ArrayList<>(); 
 		
 		List<AvailableRoom> availableRooms = rooms.stream()

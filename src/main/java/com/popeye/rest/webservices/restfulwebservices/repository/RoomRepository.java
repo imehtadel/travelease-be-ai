@@ -11,4 +11,5 @@ import com.popeye.rest.webservices.restfulwebservices.model.Room;
 public interface RoomRepository extends JpaRepository<Room, Long>{
 
 	public Optional<Room> findById(Long id);
+	public List<Room> findByHotelId(Long hotelId);
 }
