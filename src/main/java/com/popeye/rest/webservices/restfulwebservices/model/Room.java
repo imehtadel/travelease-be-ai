@@ -27,6 +27,17 @@ public class Room {
     @Column(name = "BOOKING_IDs")
     private String bookingIds;
     
+    @Column(name = "ROOM_PRICE")
+    private Double roomPrice;
+    
+	public Double getRoomPrice() {
+		return roomPrice;
+	}
+
+	public void setRoomPrice(Double roomPrice) {
+		this.roomPrice = roomPrice;
+	}
+
 	public Long getId() {
 		return id;
 	}

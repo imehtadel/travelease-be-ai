@@ -32,8 +32,9 @@ public class RoomService {
 	@Autowired 
 	private BookingRepository bookingRepository;
 	
-	public List<AvailableRoom> getAvailableRooms(Long hotelId, String checkInDate, String checkOutDate) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	
+	public List<AvailableRoom> getAvailableRooms(Long hotelId, String checkInDate, String checkOutDate, Double price) {
 		List<Room> rooms = roomRepository.findByHotelId(hotelId);
 		List<Long> unAvailableRoomIds = new ArrayList<>(); 
 		
@@ -61,6 +62,10 @@ public class RoomService {
 					if(customerCheckInDate.isBefore(customerCheckOutDate) && (!customerCheckInDate.isAfter(existingCheckInDate) ||  !customerCheckOutDate.isBefore(existingCheckOutDate))) {
 						unAvailableRoomIds.add(room.getId());
 					}
+				}
+				
+				if(price < room.getRoomPrice()) {
+					unAvailableRoomIds.add(room.getId());
 				}
 				
 			}

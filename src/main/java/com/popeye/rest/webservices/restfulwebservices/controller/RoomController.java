@@ -19,7 +19,7 @@ public class RoomController {
 
 	@GetMapping("/jpa/hotel/{hotelId}/rooms")
 	public List<AvailableRoom> getavailableRooms(@PathVariable Long hotelId, @RequestParam("checkInDate") String checkInDate, @RequestParam("checkOutDate") String checkoutDate){
-		return roomService.getAvailableRooms(hotelId, checkInDate, checkoutDate);
+		return roomService.getAvailableRooms(hotelId, checkInDate, checkoutDate, 120000.00);
 	}
 
 }
