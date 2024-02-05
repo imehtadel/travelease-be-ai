@@ -39,6 +39,9 @@ public class Hotel {
     @Column(name = "HOTEL_ZIP_CODE", length = 10)
     private String zipCode;
     
+    @Column(name = "HOTEL_DISTANCE")
+    private Double distance;
+    
     @Transient
     private List<AvailableRoom> availableRooms;
 
@@ -104,5 +107,13 @@ public class Hotel {
 
 	public void setAvailableRooms(List<AvailableRoom> availableRooms) {
 		this.availableRooms = availableRooms;
+	}
+
+	public Double getDistance() {
+		return distance;
+	}
+
+	public void setDistance(Double distance) {
+		this.distance = distance;
 	}
 }

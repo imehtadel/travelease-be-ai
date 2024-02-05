@@ -35,6 +35,9 @@ public class Event {
     
     @Column(name = "EVENT_ZIP_CODE", length = 10)
     private String zipCode;
+    
+    @Column(name = "EVENT_TIME_ZONE")
+    private String timeZone;
 
 	public Long getId() {
 		return id;
@@ -90,5 +93,13 @@ public class Event {
 
 	public void setZipCode(String zipCode) {
 		this.zipCode = zipCode;
+	}
+
+	public String getTimeZone() {
+		return timeZone;
+	}
+
+	public void setTimeZone(String timeZone) {
+		this.timeZone = timeZone;
 	}  
 }
