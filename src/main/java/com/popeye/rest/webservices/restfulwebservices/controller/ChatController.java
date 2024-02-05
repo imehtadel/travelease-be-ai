@@ -43,7 +43,7 @@ public class ChatController {
                 .buildClient();
 
         AzureCognitiveSearchChatExtensionConfiguration searchConfig = new AzureCognitiveSearchChatExtensionConfiguration(
-                new AzureCognitiveSearchChatExtensionParameters("https://traveleasecsr.search.windows.net", "travelease-index2")
+                new AzureCognitiveSearchChatExtensionParameters("https://traveleasecsr.search.windows.net", "travel-index5")
                         .setAuthentication(new OnYourDataApiKeyAuthenticationOptions("L7ydhR2PPe97zucO2nhXj5GM5XxbkmlgF6pnjnbA0aAzSeA7KSxr"))
                         .setQueryType(AzureCognitiveSearchQueryType.SIMPLE) // SIMPLE, VECTOR, or Hybrid
                         .setInScope(true)
@@ -58,10 +58,6 @@ public class ChatController {
             ChatCompletionsOptions options = new ChatCompletionsOptions(chatMessages).setDataSources(Arrays.asList(searchConfig));
 
             response = openAIClient.getChatCompletions("popeye-azure-openai", options);
-            System.out.println("Response ID:" + response.getId());
-            System.out.println("Response created at:" + response.getCreatedAt());
-            System.out.println("Response role:" + response.getChoices().get(0).getMessage().getRole());
-            System.out.println("Response choices:" + response.getChoices().get(0).getMessage().getContent());
 
         }
         if(null != response && !CollectionUtils.isEmpty(response.getChoices()) && null != response.getChoices().get(0).getMessage()){
@@ -88,7 +84,7 @@ public class ChatController {
                 String promptAudienceEventDetails = "Guest wants to explore the city, its food, culture, nature and enjoy the " + guestEvent.getName() +
                         ". Guest will attend event " + guestEvent.getName() + ", " + guestEvent.getDescription() + " at " +
                         guestEvent.getCountry() + ", " + guestEvent.getState() + ", " +
-                        guestEvent.getZipCode() + ", " + guestEvent.getZipCode() + " in the timeZone. ";
+                        guestEvent.getZipCode() + ", " + guestEvent.getTimeZone() + " in the timeZone. ";
                 prompt.append(promptAudienceEventDetails);
             }
         });
@@ -103,10 +99,9 @@ public class ChatController {
                         hotel.getCountry() +", " + hotel.getState() + ", " + hotel.getZipCode() + ". ";
                 prompt.append(promptAudienceHotelDetails);
             }
-            prompt.append("Advise hotel activities and events as well in the itinerary. ");
         });
-        String promptIntent = "Consider the event time zone while creating the itinerary and include activities in the itinerary " +
-                "so that guest could enjoy hotel, explore, and experience the city, its architecture, food and culture. ";
+        String promptIntent = "Consider the event time zone while creating the itinerary and include hotel activities in the itinerary " +
+                "so that guest could enjoy, explore, and experience the city, its architecture, food and culture.";
         prompt.append(promptIntent);
         if(!StringUtils.isEmpty(chatRequest.getMessage())) prompt.append(chatRequest.getMessage());
 
