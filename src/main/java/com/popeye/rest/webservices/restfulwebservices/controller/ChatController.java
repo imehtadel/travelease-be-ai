@@ -8,6 +8,7 @@ import com.popeye.rest.webservices.restfulwebservices.model.request.ChatRequest;
 import com.popeye.rest.webservices.restfulwebservices.model.request.ChatResponse;
 import com.popeye.rest.webservices.restfulwebservices.service.ChatRestService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +22,21 @@ import java.util.List;
 
 @RestController
 public class ChatController {
+	
+	@Value("${azure.openai.url}")
+	private String openAIUrl;
+
+	@Value("${azure.openai.key}")
+	private String openAIKey;
+
+	@Value("${azure.openai.search.url}")
+	private String openAISearchUrl;
+
+	@Value("${azure.openai.search.key}")
+	private String openAISearchKey;
+
+	@Value("${azure.openai.search.csr.index}")
+	private String openAISearchCSRIndex;
 
     @Autowired
     ChatRestService chatRestService;
@@ -28,17 +44,17 @@ public class ChatController {
     @PostMapping(value = "/chat")
     public ChatResponse getChatModels(@RequestBody ChatRequest chatRequest) {
 
-        OpenAIClient openAIClient = new OpenAIClientBuilder().endpoint("https://popeye-openai.openai.azure.com/")
-                .credential(new AzureKeyCredential("8bf5874340a64fadab1a75cb4f8123a9"))
-                .buildClient();
+    	OpenAIClient openAIClient = new OpenAIClientBuilder().endpoint(openAIUrl)
+    	        .credential(new AzureKeyCredential(openAIKey))
+    	        .buildClient();
 
-        AzureCognitiveSearchChatExtensionConfiguration searchConfig = new AzureCognitiveSearchChatExtensionConfiguration(
-                new AzureCognitiveSearchChatExtensionParameters("https://traveleasecsr.search.windows.net", "travelease-index2")
-                        .setAuthentication(new OnYourDataApiKeyAuthenticationOptions("L7ydhR2PPe97zucO2nhXj5GM5XxbkmlgF6pnjnbA0aAzSeA7KSxr"))
-                        .setQueryType(AzureCognitiveSearchQueryType.SIMPLE) // SIMPLE, VECTOR, or Hybrid
-                        .setInScope(true)
-                        .setTopNDocuments(2)
-        );
+    	AzureCognitiveSearchChatExtensionConfiguration searchConfig = new AzureCognitiveSearchChatExtensionConfiguration(
+    	        new AzureCognitiveSearchChatExtensionParameters(openAISearchUrl, openAISearchCSRIndex)
+    	                .setAuthentication(new OnYourDataApiKeyAuthenticationOptions(openAISearchKey))
+    	                .setQueryType(AzureCognitiveSearchQueryType.SIMPLE) // SIMPLE, VECTOR, or Hybrid
+    	                .setInScope(true)
+    	                .setTopNDocuments(2));
+    	        
         List<ChatRequestMessage> chatMessages = new ArrayList<>();
         ChatCompletions response = null;
         ChatResponse chatResponse = new ChatResponse();
