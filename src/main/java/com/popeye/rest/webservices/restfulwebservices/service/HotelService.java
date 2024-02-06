@@ -50,6 +50,7 @@ public class HotelService {
 				List<AvailableRoom> availableRooms = new ArrayList<AvailableRoom>();
 				if(eventHotelMapping.getHotelZipCode().equals(hotel.getZipCode())) {
 					eventHotels.add(hotel);
+					hotel.setEventZipCode(eventHotelMapping.getEventZipCode());
 					availableRooms = hotel.getAvailableRooms();
 					for(EventDetail e : eventDetails) {
 						if(!CollectionUtils.isEmpty(availableRooms)) {
